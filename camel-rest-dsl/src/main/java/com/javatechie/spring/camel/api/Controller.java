@@ -32,8 +32,6 @@ public class Controller {
 
 	@GetMapping("/number/{id}")
 	public DingDto number(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
-		// FluentProducerTemplate producerTemplate =
-		// context.createFluentProducerTemplate();
 		DingDto dingDto = new DingDto();
 		Exchange exchange = producerTemplate.send("http://localhost:9090/my/" + id, new Processor() {
 			public void process(Exchange exchange) throws Exception {
@@ -57,8 +55,6 @@ public class Controller {
 
 	@GetMapping("/number1/{id}")
 	public DingDto number1(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
-		// FluentProducerTemplate producerTemplate =
-		// context.createFluentProducerTemplate();
 		DingDto dingDto = new DingDto();
 		Exchange reqExchange = ExchangeBuilder.anExchange(camelContext).build();
 		Exchange exchange = producerTemplate.send("direct: UmnHashApiRoute", reqExchange);
