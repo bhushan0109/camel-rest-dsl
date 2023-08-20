@@ -11,8 +11,10 @@ import org.apache.camel.ProducerTemplate;
 import org.apache.camel.builder.ExchangeBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -30,9 +32,10 @@ public class Controller {
 
 	@GetMapping("/number/{id}")
 	public DingDto number(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
-		//FluentProducerTemplate producerTemplate = context.createFluentProducerTemplate();
+		// FluentProducerTemplate producerTemplate =
+		// context.createFluentProducerTemplate();
 		DingDto dingDto = new DingDto();
-		Exchange exchange = producerTemplate.send("http://localhost:8080/user/my/" + id, new Processor() {
+		Exchange exchange = producerTemplate.send("http://localhost:9090/my/" + id, new Processor() {
 			public void process(Exchange exchange) throws Exception {
 			}
 		});
@@ -51,22 +54,34 @@ public class Controller {
 		}
 		return dingDto;
 	}
-	
+
 	@GetMapping("/number1/{id}")
 	public DingDto number1(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
-		//FluentProducerTemplate producerTemplate = context.createFluentProducerTemplate();
+		// FluentProducerTemplate producerTemplate =
+		// context.createFluentProducerTemplate();
 		DingDto dingDto = new DingDto();
-		Exchange reqExchange =ExchangeBuilder.anExchange(camelContext).build();
-		Exchange exchange = producerTemplate.send("direct: UmnHashApiRoute",reqExchange);
-		
-			Object body = exchange.getIn().getBody();
-			dingDto = new ObjectMapper().readValue(body.toString(), DingDto.class);
-			String umnHash = dingDto.getUmnHash();
-			System.out.println("final umnHash output ==>" + umnHash);
-			System.out.println("DONE!!");
+		Exchange reqExchange = ExchangeBuilder.anExchange(camelContext).build();
+		Exchange exchange = producerTemplate.send("direct: UmnHashApiRoute", reqExchange);
+
+		Object body = exchange.getIn().getBody();
+		dingDto = new ObjectMapper().readValue(body.toString(), DingDto.class);
+		String umnHash = dingDto.getUmnHash();
+		System.out.println("final umnHash output ==>" + umnHash);
+		System.out.println("DONE!!");
 
 		return dingDto;
 	}
-	
+
+	@GetMapping(value = "/my/{id}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public DingDto myString(@PathVariable int id) {
+		DingDto dingDto = new DingDto();
+		if (id == 10) {
+			dingDto.setUmnHash("jghjksfdgsdgfkjasdgfvjadgjcvhjchadjcbhahcjad");
+		} else {
+			dingDto.setUmnHash("id not correct");
+		}
+		return dingDto;
+	}
 
 }

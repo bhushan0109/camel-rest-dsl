@@ -19,13 +19,13 @@ public class NumberApiRoute extends RouteBuilder {
 			}
 		}).handled(true);
 //Start of Route
-		from("direct: UmnHashApiRoute").log("Starting Start Number Api Route..")
+		from("direct: UmnHashApiRoute").log("UmnHashApiRoute..")
 //Setting Up the Headers and Method
 				.setHeader(Exchange.HTTP_METHOD, simple("GET"))
 				.setHeader(Exchange.CONTENT_TYPE, simple("application/json"))
 				.setHeader(HttpHeaders.ACCEPT, simple("*/*"))
 //Finding Details about 
-				.toD("http://localhost:8080/user/my/10").convertBodyTo(String.class).process(new Processor() {
+				.toD("http://localhost:9090/my/10").convertBodyTo(String.class).process(new Processor() {
 					@Override
 					public void process(Exchange exchange) throws Exception {
 						System.out.println("Output:- " + exchange.getIn().getBody().toString());
