@@ -30,6 +30,33 @@ public class Controller {
 	@Autowired
 	private CamelContext camelContext;
 
+	@GetMapping("/umnHash/{id}")
+	public DingDto umnHash(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
+		DingDto dingDto = new DingDto();
+		Exchange reqExchange = ExchangeBuilder.anExchange(camelContext).build();
+		Exchange exchange = producerTemplate.send("direct: UmnHashApiRoute", reqExchange);
+
+		Object body = exchange.getIn().getBody();
+		dingDto = new ObjectMapper().readValue(body.toString(), DingDto.class);
+		String umnHash = dingDto.getUmnHash();
+		System.out.println("final umnHash output ==>" + umnHash);
+		System.out.println("DONE!!");
+
+		return dingDto;
+	}
+
+	// not used
+	@GetMapping(value = "/my/{id}")
+	@ResponseStatus(value = HttpStatus.OK)
+	public DingDto myString(@PathVariable int id) {
+		DingDto dingDto = new DingDto();
+		if (id == 10) {
+			dingDto.setUmnHash("jghjksfdgsdgfkjasdgfvjadgjcvhjchadjcbhahcjad");
+		} else {
+			dingDto.setUmnHash("id not correct");
+		}
+		return dingDto;
+	}
 	@GetMapping("/number/{id}")
 	public DingDto number(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
 		DingDto dingDto = new DingDto();
@@ -49,33 +76,6 @@ public class Controller {
 			System.out.println("DONE!!");
 		} else {
 			System.out.println("fail to get!!");
-		}
-		return dingDto;
-	}
-
-	@GetMapping("/number1/{id}")
-	public DingDto number1(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
-		DingDto dingDto = new DingDto();
-		Exchange reqExchange = ExchangeBuilder.anExchange(camelContext).build();
-		Exchange exchange = producerTemplate.send("direct: UmnHashApiRoute", reqExchange);
-
-		Object body = exchange.getIn().getBody();
-		dingDto = new ObjectMapper().readValue(body.toString(), DingDto.class);
-		String umnHash = dingDto.getUmnHash();
-		System.out.println("final umnHash output ==>" + umnHash);
-		System.out.println("DONE!!");
-
-		return dingDto;
-	}
-
-	@GetMapping(value = "/my/{id}")
-	@ResponseStatus(value = HttpStatus.OK)
-	public DingDto myString(@PathVariable int id) {
-		DingDto dingDto = new DingDto();
-		if (id == 10) {
-			dingDto.setUmnHash("jghjksfdgsdgfkjasdgfvjadgjcvhjchadjcbhahcjad");
-		} else {
-			dingDto.setUmnHash("id not correct");
 		}
 		return dingDto;
 	}
