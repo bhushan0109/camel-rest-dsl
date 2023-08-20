@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Built-By: Bhushan
+Build-Jdk: 17.0.1
+Implementation-Title: camel-rest-dsl
+Implementation-Version: 0.0.1-SNAPSHOT
+Implementation-Vendor-Id: com.javatechie
+Implementation-URL: https://projects.spring.io/spring-boot/#/spring-boot
+ -starter-parent/camel-rest-dsl
+Created-By: Maven Integration for Eclipse
+
