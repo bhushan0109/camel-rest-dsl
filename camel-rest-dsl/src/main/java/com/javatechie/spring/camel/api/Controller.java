@@ -41,7 +41,6 @@ public class Controller {
 		String umnHash = dingDto.getUmnHash();
 		System.out.println("final umnHash output ==>" + umnHash);
 		System.out.println("DONE!!");
-
 		return dingDto;
 	}
 
