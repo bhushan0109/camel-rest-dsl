@@ -30,8 +30,8 @@ public class Controller {
 	@Autowired
 	private CamelContext camelContext;
 
-	@GetMapping("/umnHash/")
-	public DingDto umnHash(@PathVariable int id) throws JsonParseException, JsonMappingException, IOException {
+	@GetMapping("/umnHash")
+	public DingDto umnHash() throws JsonParseException, JsonMappingException, IOException {
 		DingDto dingDto = new DingDto();
 		Exchange reqExchange = ExchangeBuilder.anExchange(camelContext).build();
 		Exchange exchange = producerTemplate.send("direct: UmnHashApiRoute", reqExchange);
